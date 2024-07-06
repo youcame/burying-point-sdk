@@ -4,7 +4,6 @@ import com.neu.buryingpoint.process.ArgProcessor;
 import com.neu.buryingpoint.process.RecordProcessor;
 import com.neu.buryingpoint.process.impl.DefaultArgProcessor;
 import com.neu.buryingpoint.process.impl.DefaultRecordProcessor;
-import org.springframework.data.relational.core.sql.In;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -22,7 +21,7 @@ public @interface Record {
     /**
      * 是否记录操作
      */
-    String isRecord();
+    String isRecord() default "true";
 
     /**
      * 允许用户自定义处理参数

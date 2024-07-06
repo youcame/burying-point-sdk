@@ -1,10 +1,13 @@
 package com.neu.buryingpoint.core;
 
-import com.neu.buryingpoint.RecordParams;
+import com.neu.buryingpoint.model.RecordParams;
 import com.neu.buryingpoint.annontion.Record;
 import com.neu.buryingpoint.process.ArgProcessor;
+import com.neu.buryingpoint.process.RecordProcessor;
 import com.neu.buryingpoint.util.ArgsUtil;
 import lombok.Data;
+import org.apache.dubbo.common.utils.StringUtils;
+import org.apache.dubbo.rpc.RpcContext;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -32,19 +35,36 @@ public class RecordAspect implements Ordered {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         Record record = method.getAnnotation(Record.class);
-        String bid = record.bid();
         String isOpen = record.isRecord();
-        ArgProcessor argProcessor = record.argProcessor();
-
         if(!"true".equals(isOpen)) {
             return joinPoint.proceed();
         }
-        RecordParams recordParams = new RecordParams();
-        ArgsUtil.preRecordParams(recordParams, joinPoint);
-
+        initContext();
+        ArgProcessor argProcessor = record.argProcessor().newInstance();
+        RecordProcessor recordProcessor = record.recordProcessor().newInstance();
+        RecordParams params = new RecordParams();
+        //从方法入参中获取参数值并记录
+        ArgsUtil.getParamFromMethodArgs(params, joinPoint);
+        //从注解中获取参数值并记录
+        getParamFromAnnontion(params, record);
+        //系统自定义设置参数
+        argProcessor.process(params);
+        //发送埋点
+        recordProcessor.process();
     }
 
     public int getOrder() {
-        return 0;
+        return Integer.MAX_VALUE;
+    }
+
+    private void getParamFromAnnontion(RecordParams params, Record record) {
+        params.setBid(StringUtils.isBlank(record.bid()) ? "" : record.bid());
+        params.setDescription(record.bid());
+    }
+
+    private void initContext(){
+        if(RpcContext.getServiceContext().getAttachment()) {
+
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.neu.buryingpoint;
+package com.neu.buryingpoint.model;
 
 import lombok.Data;
 

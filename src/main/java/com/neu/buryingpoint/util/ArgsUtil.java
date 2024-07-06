@@ -1,17 +1,13 @@
 package com.neu.buryingpoint.util;
 
-import com.neu.buryingpoint.RecordParams;
-import com.neu.buryingpoint.SystemInfo;
+import com.neu.buryingpoint.model.RecordParams;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.dubbo.common.json.GsonUtils;
 import org.apache.dubbo.common.utils.JsonUtils;
-import org.apache.el.util.ReflectionUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
 
-import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.Date;
 
@@ -23,7 +19,7 @@ public class ArgsUtil {
     private static final String getPattern = "get%s";
 
 
-    public static void preRecordParams(RecordParams recordParams, ProceedingJoinPoint joinPoint) {
+    public static void getParamFromMethodArgs(RecordParams recordParams, ProceedingJoinPoint joinPoint) {
         recordParams.setOperateTime(new Date());
         Object[] args = joinPoint.getArgs();
         if(args.length == 0) {
