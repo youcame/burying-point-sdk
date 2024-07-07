@@ -16,7 +16,7 @@ public @interface Record {
     /**
      * 标识埋点名称
      */
-    String bid();
+    String bid() default "undefined";
 
     /**
      * 是否记录操作

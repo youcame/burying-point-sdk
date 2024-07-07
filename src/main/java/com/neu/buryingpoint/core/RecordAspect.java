@@ -49,8 +49,9 @@ public class RecordAspect implements Ordered {
         getParamFromAnnontion(params, record);
         //系统自定义设置参数
         argProcessor.process(params);
-        //发送埋点
+        //用户自定义发送埋点
         recordProcessor.process();
+        return joinPoint.proceed();
     }
 
     public int getOrder() {
@@ -63,8 +64,8 @@ public class RecordAspect implements Ordered {
     }
 
     private void initContext(){
-        if(RpcContext.getServiceContext().getAttachment()) {
-
-        }
+//        if(RpcContext.getServiceContext().getAttachment()) {
+//
+//        }
     }
 }
