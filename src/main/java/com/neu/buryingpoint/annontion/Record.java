@@ -1,9 +1,7 @@
 package com.neu.buryingpoint.annontion;
 
-import com.neu.buryingpoint.process.ArgProcessor;
-import com.neu.buryingpoint.process.RecordProcessor;
-import com.neu.buryingpoint.process.impl.DefaultArgProcessor;
-import com.neu.buryingpoint.process.impl.DefaultRecordProcessor;
+import com.neu.buryingpoint.process.ExceptionProcessor;
+import com.neu.buryingpoint.process.ResultProcessor;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -24,10 +22,15 @@ public @interface Record {
     String isRecord() default "true";
 
     /**
-     * 允许用户自定义处理参数
+     * 正常时设置参数，可由sdk处理
      * @return
      */
-    Class<? extends ArgProcessor> argProcessor() default DefaultArgProcessor.class;
+    Class<? extends ResultProcessor> resultProcessor() default ResultProcessor.class;
 
-    Class<? extends RecordProcessor> recordProcessor() default DefaultRecordProcessor.class;
+    /**
+     * 异常时设置参数，可由sdk处理
+     * @return
+     */
+    Class<? extends ExceptionProcessor> exceptionProcessor() default ExceptionProcessor.class;
+
 }

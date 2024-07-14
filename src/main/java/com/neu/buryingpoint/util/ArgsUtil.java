@@ -18,11 +18,15 @@ public class ArgsUtil {
 
     private static final String getPattern = "get%s";
 
-
+    /**
+     * 获取pin与source
+     * @param recordParams
+     * @param joinPoint
+     */
     public static void getParamFromMethodArgs(RecordParams recordParams, ProceedingJoinPoint joinPoint) {
         recordParams.setOperateTime(new Date());
         Object[] args = joinPoint.getArgs();
-        if(args.length == 0) {
+        if (args.length == 0) {
             return;
         }
         //从第一个参数取，一般是request对象
@@ -34,10 +38,10 @@ public class ArgsUtil {
     }
 
     private static String getParam(Object request, String paramName) {
-        try{
+        try {
             Method method = ReflectionUtils.findMethod(request.getClass(), String.format(getPattern, paramName));
             Object value = ReflectionUtils.invokeMethod(method, request);
-            if(value instanceof String) {
+            if (value instanceof String) {
                 return (String) value;
             }
         } catch (Exception e) {
