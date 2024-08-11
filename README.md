@@ -33,6 +33,7 @@ travel:
 
 ### 实现
 当今大部分主流rpc框架都支持提供上下文的功能，以便存储与记录rpc调用时的一些信息，在该sdk中，我们将在上下文中存储调用的链路步骤数：若A调用了B、C、D三个接口，则A中存储为步骤1，B、C、D分别存储1_1,1_2,1_3,依次类推...
+![step递增规则](https://github.com/user-attachments/assets/65946e8b-1ced-4a8e-89af-9d3e66daf4ae)
 
 参数以及调用结果，采用aop与反射的方式的获取，默认会获取参数中的pin、channel、source等通用字段，支持接入方自行实现参数的获取。
 
