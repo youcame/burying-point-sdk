@@ -2,6 +2,7 @@ package com.neu.buryingpoint.core;
 
 import com.neu.buryingpoint.model.RecordParams;
 import com.neu.buryingpoint.annontion.Record;
+import com.neu.buryingpoint.model.SystemConfig;
 import com.neu.buryingpoint.process.ArgProcessor;
 import com.neu.buryingpoint.process.ExceptionProcessor;
 import com.neu.buryingpoint.process.RecordProcessor;
@@ -29,6 +30,8 @@ public class RecordAspect implements Ordered {
 
     private RecordProcessor recordProcessor;
     private ArgProcessor argProcessor;
+    @Resource
+    private SystemConfig systemConfig;
 
     @Autowired
     public RecordAspect(RecordProcessor recordProcessor, ArgProcessor argProcessor) {
@@ -92,11 +95,18 @@ public class RecordAspect implements Ordered {
         }
         //从方法入参中获取参数值并记录
         ArgsUtil.getParamFromMethodArgs(params, joinPoint);
+        //从Starter中获取参数
+        getArgsFromStarter(params);
         //从注解中获取参数值并记录
         getParamFromAnnontion(params, record);
         //系统自定义设置参数
         argProcessor.process(params);
         //用户自定义发送埋点
         recordProcessor.process();
+    }
+
+    private void getArgsFromStarter(RecordParams params) {
+        params.setSysId(systemConfig.getSysId());
+        params.setSysDescription(systemConfig.getSysDescription());
     }
 }

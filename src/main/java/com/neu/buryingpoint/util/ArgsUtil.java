@@ -24,7 +24,6 @@ public class ArgsUtil {
      * @param joinPoint
      */
     public static void getParamFromMethodArgs(RecordParams recordParams, ProceedingJoinPoint joinPoint) {
-        recordParams.setOperateTime(new Date());
         Object[] args = joinPoint.getArgs();
         if (args.length == 0) {
             return;
@@ -33,6 +32,7 @@ public class ArgsUtil {
         Object request = args[0];
         String pin = getParam(request, "Pin");
         String source = getParam(request, "Source");
+        recordParams.setOperateTime(new Date());
         recordParams.setPin(pin);
         recordParams.setSource(source);
     }
