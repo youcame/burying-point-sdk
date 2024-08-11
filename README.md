@@ -10,6 +10,22 @@
 
 ![image](https://github.com/user-attachments/assets/c8ea2f59-ed14-49e9-b438-b60abea8726a)
 
+### 接入
+1. 引入pom包
+<dependency>
+  <groupId>com.neu</groupId>
+  <artifactId>burying-point-sdk</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+</dependency>
+2. 引入接入系统的sysId、token、sysDescription等，以表示你所代表的业务线，在yaml文件中写入
+travel:
+  track:
+    sys-description: helps more people find there teammates with same interest
+    sys-id: group-finder
+    token: asdasadsadaasdasd
+3. 自定义记录流程、可采用异步发送MQ或写入数据库等，由一个统一的系统进行存储；自定义处理类，由于不同的系统在返回的数据结构不同（例如存在subMessage），可自定义处理类，并在注解中传入，不实现可采用默认；自定义参数处理类，若方法的某些参数sdk中不存在，可自定义参数的记录方法。
+4. 在需要记录的方法上加入注解：@Record()，传入参数bid、isRecord（即是否进行埋点上报的开关）与上述实现类，完成埋点的上报与记录。
+
 ### 实现
 当今大部分主流rpc框架都支持提供上下文的功能，以便存储与记录rpc调用时的一些信息，在该sdk中，我们将在上下文中存储调用的链路步骤数：若A调用了B、C、D三个接口，则A中存储为步骤1，B、C、D分别存储1_1,1_2,1_3,依次类推...
 
